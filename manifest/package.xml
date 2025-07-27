@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Job_Posting__c</members>
+        <members>Job_Application__c</members>
+        <members>Interview__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Job_Posting__c.Department__c</members>
+        <members>Job_Posting__c.Location__c</members>
+        <members>Job_Posting__c.Job_Description__c</members>
+        <members>Job_Posting__c.Posting_Date__c</members>
+        <members>Job_Posting__c.Closing_Date__c</members>
+        <members>Job_Posting__c.Status__c</members>
+        
+        <members>Job_Application__c.Applicant_Name__c</members>
+        <members>Job_Application__c.Email__c</members>
+        <members>Job_Application__c.Phone__c</members>
+        <members>Job_Application__c.Resume__c</members>
+        <members>Job_Application__c.Application_Date__c</members>
+        <members>Job_Application__c.Status__c</members>
+        <members>Job_Application__c.Source__c</members>
+        <members>Job_Application__c.Job_Posting__c</members>
+        
+        <members>Interview__c.Interview_Date_Time__c</members>
+        <members>Interview__c.Interviewers__c</members>
+        <members>Interview__c.Interview_Type__c</members>
+        <members>Interview__c.Interview_Notes__c</members>
+        <members>Interview__c.Status__c</members>
+        <members>Interview__c.Feedback__c</members>
+        <members>Interview__c.Job_Application__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>Job_Posting__c</members>
+        <members>Job_Application__c</members>
+        <members>Interview__c</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>Recruitment_Manager</members>
+        <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>Recruitment_Manager_UtilityBar</members>
+        <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>Recruitment_Manager</members>
+        <name>PermissionSet</name>
+    </types>
+    <version>63.0</version>
+</Package>
