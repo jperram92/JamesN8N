@@ -54,9 +54,67 @@ public with sharing class MetadataDeploymentController {
             // Prepare a simulated deployment response
             String deploymentId = 'DEP-' + Datetime.now().getTime();
             
+            // Create the deployment record
+            Deployment__c deployment = new Deployment__c(
+                Name = deploymentName,
+                Deployment_ID__c = deploymentId,
+                Deployment_Date__c = Datetime.now(),
+                Status__c = 'Pending',
+                Test_Level__c = (String)deploymentOptions.get('testLevel'),
+                Check_Only__c = (Boolean)deploymentOptions.get('checkOnly'),
+                Rollback_on_Error__c = (Boolean)deploymentOptions.get('rollbackOnError'),
+                Ignore_Warnings__c = (Boolean)deploymentOptions.get('ignoreWarnings'),
+                Deployment_Comments__c = (String)deploymentOptions.get('deploymentComments')
+            );
+            
+            insert deployment;
+            
+            // Create deployment component records
+            List<Deployment_Component__c> deploymentComponents = new List<Deployment_Component__c>();
+            
+            for (Map<String, Object> component : components) {
+                // Convert lastModifiedDate properly if it exists
+                Datetime lastModDate = null;
+                if (component.get('lastModifiedDate') != null) {
+                    try {
+                        // If it's a string, parse it
+                        if (component.get('lastModifiedDate') instanceof String) {
+                            String dateStr = (String)component.get('lastModifiedDate');
+                            // Try to parse the string to a Datetime
+                            if (dateStr != null && dateStr.trim() != '') {
+                                // Handle ISO format date string
+                                lastModDate = (Datetime)JSON.deserialize('"' + dateStr + '"', Datetime.class);
+                            }
+                        } 
+                        // If it's already a Datetime
+                        else if (component.get('lastModifiedDate') instanceof Datetime) {
+                            lastModDate = (Datetime)component.get('lastModifiedDate');
+                        }
+                    } catch (Exception e) {
+                        System.debug('Error converting lastModifiedDate: ' + e.getMessage());
+                        // Continue with null date if conversion fails
+                    }
+                }
+                
+                Deployment_Component__c deploymentComponent = new Deployment_Component__c(
+                    Deployment__c = deployment.Id,
+                    Name = (String)component.get('name'),
+                    API_Name__c = (String)component.get('apiName'),
+                    Type__c = (String)component.get('type'),
+                    Comment__c = (String)component.get('deploymentComment'),
+                    Last_Modified_Date__c = lastModDate
+                );
+                
+                deploymentComponents.add(deploymentComponent);
+            }
+            
+            if (!deploymentComponents.isEmpty()) {
+                insert deploymentComponents;
+            }
+            
+            // Return the deployment ID to the LWC component
             return deploymentId;
         } catch (Exception e) {
-            System.debug('Error deploying components: ' + e.getMessage());
             throw new AuraHandledException('Error deploying components: ' + e.getMessage());
         }
     }

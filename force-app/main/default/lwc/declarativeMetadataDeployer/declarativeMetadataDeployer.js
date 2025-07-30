@@ -251,7 +251,8 @@ export default class DeclarativeMetadataDeployer extends LightningElement {
             runTests: this.runTests,
             checkOnly: this.checkOnly,
             rollbackOnError: this.rollbackOnError,
-            ignoreWarnings: this.ignoreWarnings
+            ignoreWarnings: this.ignoreWarnings,
+            deploymentComments: this.deploymentComments // Added to pass comments to the controller
         };
         
         // Add the overall deployment comment to each component that doesn't have one
@@ -273,6 +274,9 @@ export default class DeclarativeMetadataDeployer extends LightningElement {
             })
             .then(deploymentId => {
                 this.showToast('Success', `Deployment initiated with ID: ${deploymentId}`, 'success');
+                
+                // Optional: Add logic to poll for deployment status and update the UI
+                this.pollDeploymentStatus(deploymentId);
             })
             .catch(error => {
                 this.showToast('Error', 'Error deploying components: ' + this.extractErrorMessage(error), 'error');
@@ -280,6 +284,34 @@ export default class DeclarativeMetadataDeployer extends LightningElement {
             .finally(() => {
                 this.isLoading = false;
             });
+    }
+    
+    // New method to poll for deployment status updates
+    pollDeploymentStatus(deploymentId) {
+        // Implementation for polling deployment status can be added here
+        // This would call a new method in the controller to check status
+        
+        // Example (not implemented): 
+        /*
+        const checkStatus = () => {
+            checkDeploymentStatus({ deploymentId })
+                .then(result => {
+                    if (result.status === 'Completed' || result.status === 'Failed') {
+                        // Show final status
+                        const variant = result.success ? 'success' : 'error';
+                        this.showToast('Deployment Status', `Deployment ${result.status}`, variant);
+                    } else {
+                        // Still in progress, check again later
+                        window.setTimeout(checkStatus, 5000);
+                    }
+                })
+                .catch(error => {
+                    this.showToast('Error', 'Error checking deployment status: ' + this.extractErrorMessage(error), 'error');
+                });
+        };
+        
+        window.setTimeout(checkStatus, 5000);
+        */
     }
     
     // Methods for Tooling API query
