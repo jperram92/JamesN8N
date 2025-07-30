@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RemoteSiteSetting xmlns="http://soap.sforce.com/2006/04/metadata">
+    <disableProtocolSecurity>false</disableProtocolSecurity>
+    <isActive>true</isActive>
+    <url>https://orgfarm-e8e886d31e-dev-ed.develop.lightning.force.com</url>
+    <description>Allow callouts to the local org for Tooling API access</description>
+</RemoteSiteSetting>
